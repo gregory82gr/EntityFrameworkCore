@@ -12,7 +12,7 @@ namespace EntityFrameworkCore.Domain
 
         //Navigation properties
         //League has many teams.Team belongs to one league 1:many
-        public List<Team>? Teams { get; set; }
+        public List<Team>? Teams { get; set; } = new List<Team>();
     }
     
 }
