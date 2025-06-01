@@ -13,38 +13,26 @@ namespace EntityFrameworkCore.Data
 {
     public class FootballLeageDbContext:DbContext
     {
-        public FootballLeageDbContext()
+        
+        public FootballLeageDbContext(DbContextOptions<FootballLeageDbContext> options)
+            : base(options)
         {
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            var dbPath = Path.Join(path, "FootballLeage_Efcore.db");
-
-            DbPath = dbPath;
-            Console.WriteLine($"Using database at: {DbPath}");
+            
         }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Coach> Coaches { get; set; }
         public DbSet<League> Leagues { get; set; }
         public DbSet<Match> Matches { get; set; }
+        public DbSet<TeamsAndLeaguesView> TeamsAndLeaguesView { get; set; }
 
-        public string DbPath { get; private set; }
+        //public string DbPath { get; private set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //using Microsoft.EntityFrameworkCore.SqlServer;
-            //optionsBuilder
-            //    .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; " +
-            //    "Initial Catalog = FootballLeage_Efcore; Encrypt=False");
-
-            optionsBuilder.UseSqlite($"Data Source={DbPath}")
-                .LogTo(Console.WriteLine, LogLevel.Information)
-                .EnableSensitiveDataLogging()
-                .EnableDetailedErrors();
-        }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.Entity<TeamsAndLeaguesView>().HasNoKey().ToView("vw_TeamsAndLeagues");
         }
     }
 }

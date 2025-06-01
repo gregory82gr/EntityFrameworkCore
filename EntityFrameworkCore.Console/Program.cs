@@ -242,4 +242,10 @@ using var context =new FootballLeageDbContext();
 //    public int TotalAwayGoals { get; set; }
 //};
 
+//Raw Sql queries
 
+//var details= await context.TeamsAndLeaguesView.ToListAsync();
+//foreach (var detail in details)
+//{
+//    Console.WriteLine($"Team: {detail.TeamName}, League: {detail.LeagueName}");
+//}
