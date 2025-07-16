@@ -2,10 +2,39 @@
 using EntityFrameworkCore.Domain;
 using Microsoft.EntityFrameworkCore;
 
-// using EntityFrameworkCore.Domain;
-using var context =new FootballLeageDbContext();
-//await context.Database.MigrateAsync();
+var folder = Environment.SpecialFolder.LocalApplicationData;
+var path = Environment.GetFolderPath(folder);
+var dbPath = Path.Combine(path, "FootballLeage_Efcore.db");
+var optionsBuilder = new DbContextOptionsBuilder<FootballLeageDbContext>();
+optionsBuilder.UseSqlite($"Data Source={dbPath}");
+using var context = new FootballLeageDbContext(optionsBuilder.Options);
 
+//await InsertOneRecordWithAudit();
+
+// using EntityFrameworkCore.Domain;
+//using var context =new FootballLeageDbContext();
+//await context.Database.MigrateAsync();
+//async Task InsertOneRecord()
+//{
+//    var newCoach = new Coach
+//    {
+//        Name = "Jose Mourinho",
+//        CreatedDate = DateTime.Now
+//    };
+//    await context.Coaches.AddAsync(newCoach);
+//    await context.SaveChangesAsync();
+//}
+
+//async Task InsertOneRecordWithAudit()
+//{
+//    var newLeague = new League
+//    {
+//        Name = "New League with audit",
+
+//    };
+//    await context.Leagues.AddAsync(newLeague);
+//    await context.SaveChangesAsync();
+//}
 //var newCoach = new Coach
 //{
 //    Name = "Jose Mourinho",
@@ -59,13 +88,13 @@ using var context =new FootballLeageDbContext();
 //await context.SaveChangesAsync();
 
 //Related data
-//var match=new Match
+//var match = new Match
 //{
-//    Date = new  DateTime(2023,10,1),
+//    Date = new DateTime(2023, 10, 1),
 //    TicketPrice = 20,
 //    HomeTeamId = 2,
 //    AwayTeamId = 1,
-//    HomeTeamScore=0,
+//    HomeTeamScore = 0,
 //    AwayTeamScore = 0
 
 //};
@@ -230,6 +259,8 @@ using var context =new FootballLeageDbContext();
 //}
 
 
+
+
 //Delete behavior
 
 //class TeamDetails
@@ -249,3 +280,104 @@ using var context =new FootballLeageDbContext();
 //{
 //    Console.WriteLine($"Team: {detail.TeamName}, League: {detail.LeagueName}");
 //}
+//var transaction = await context.Database.BeginTransactionAsync();
+//var league=new League
+//{
+//    Name = "`Testing Transaction"
+//};
+
+//await context.AddAsync(league);
+//await context.SaveChangesAsync();
+//transaction.CreateSavepoint("CreatedLeague");
+
+//var coach= new Coach
+//{
+//    Name = "Transaction Coach"
+//};
+
+//await context.AddAsync(coach);
+//await context.SaveChangesAsync();
+
+//var teams = new List<Team>
+//{
+//    new Team
+//    {
+//        Name = "Transaction Team 1",
+//        LeagueId = league.Id,
+//        CoachId = coach.Id
+//    },
+//    new Team
+//    {
+//        Name = "Transaction Team 2",
+//        LeagueId = league.Id,
+//        CoachId =  coach.Id
+//    }
+//};
+
+//await context.AddRangeAsync(teams);
+//await context.SaveChangesAsync();
+
+//try {
+//    await transaction.CommitAsync();
+
+//}
+//catch (Exception ex)
+//{
+//    Console.WriteLine(ex.Message);
+//    await transaction.RollbackToSavepointAsync("Createdleague");
+//}
+
+//Console.WriteLine("Transaction completed successfully.");
+
+
+//var team= await context.Teams.FindAsync(1);
+//team.Name = "Updated Team Name wiyh concurrency";
+
+//try 
+//{
+//    // Attempt to update the team
+//    await context.SaveChangesAsync();
+//    Console.WriteLine("Team updated successfully.");
+
+//}
+//catch (DbUpdateConcurrencyException ex)
+//{
+//    Console.WriteLine("Concurrency conflict detected. Please try again.");
+//    foreach (var entry in ex.Entries)
+//    {
+//        if (entry.Entity is Team)
+//        {
+//            var proposedValues = entry.CurrentValues;
+//            var databaseValues = await entry.GetDatabaseValuesAsync();
+//            Console.WriteLine($"Proposed Name: {proposedValues["Name"]}, Database Name: {databaseValues["Name"]}");
+//        }
+//    }
+//}
+//var leagues = await context.Leagues.ToListAsync();
+//foreach (var l in leagues)
+//{
+//    Console.WriteLine($"League: {l.Name}");
+
+//}
+
+//var league = await context.Leagues.FindAsync(1);
+//league.IsDeleted = true;
+
+
+//await context.SaveChangesAsync();
+
+var leagues = await context.Leagues.ToListAsync();
+foreach (var l in leagues)
+{
+    Console.WriteLine($"League: {l.Name}");
+
+}
+
+leagues = await context.Leagues
+    .IgnoreQueryFilters()
+    .ToListAsync();
+foreach (var l in leagues)
+{
+    Console.WriteLine($"League: {l.Name}");
+
+}

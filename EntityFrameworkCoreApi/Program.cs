@@ -24,7 +24,9 @@ var connectionString = $"Data Source={dbPath}";
 
 builder.Services.AddDbContext<FootballLeageDbContext>(options =>
 {
-    options.UseSqlite($"Data Source={dbPath}")
+    options.UseSqlite($"Data Source={dbPath}"
+        , sqlliteOptions => { sqlliteOptions.CommandTimeout(30); }
+        )
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                 .LogTo(Console.WriteLine, LogLevel.Information);  
                 if (builder.Environment.IsDevelopment())

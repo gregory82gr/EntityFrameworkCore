@@ -10,6 +10,8 @@ namespace EntityFrameworkCore.Domain
     {
         public string? Name { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         //Navigation properties
         //League has many teams.Team belongs to one league 1:many
         public List<Team>? Teams { get; set; } = new List<Team>();

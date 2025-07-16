@@ -3,6 +3,7 @@ using System;
 using EntityFrameworkCore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EntityFrameworkCore.Data.Migrations
 {
     [DbContext(typeof(FootballLeageDbContext))]
-    partial class FootballLeageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250602111741_AddedVersionToken")]
+    partial class AddedVersionToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
@@ -83,9 +86,6 @@ namespace EntityFrameworkCore.Data.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("TEXT");
 
@@ -108,7 +108,6 @@ namespace EntityFrameworkCore.Data.Migrations
                         {
                             Id = 1,
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsDeleted = false,
                             Name = "Premier League",
                             Version = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -116,7 +115,6 @@ namespace EntityFrameworkCore.Data.Migrations
                         {
                             Id = 2,
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsDeleted = false,
                             Name = "Championship",
                             Version = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -124,7 +122,6 @@ namespace EntityFrameworkCore.Data.Migrations
                         {
                             Id = 3,
                             CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsDeleted = false,
                             Name = "League One",
                             Version = new Guid("00000000-0000-0000-0000-000000000000")
                         });

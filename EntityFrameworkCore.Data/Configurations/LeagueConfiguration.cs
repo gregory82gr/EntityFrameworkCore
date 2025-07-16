@@ -8,6 +8,7 @@ namespace EntityFrameworkCore.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<League> builder)
         {
+            builder.HasQueryFilter(l => !l.IsDeleted);
             // Configuration for League entity can be added here
             builder.HasData(
                 new League { Id = 1, Name = "Premier League", CreatedDate = new DateTime(2025, 01, 01) },

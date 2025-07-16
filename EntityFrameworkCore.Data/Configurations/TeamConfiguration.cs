@@ -15,7 +15,16 @@ namespace EntityFrameworkCore.Data.Configurations
         public void Configure(EntityTypeBuilder<Team> builder)
         {
             builder.HasIndex(t => t.Name).IsUnique();
-            
+            //builder.Property(t => t.Name)
+            //       .IsRequired()
+            //       .HasMaxLength(100);
+            //For sql server only
+            //builder.Property(q=>q.RowVersion)
+            //       .IsRowVersion()
+            //       .IsConcurrencyToken();
+
+
+
             builder.HasMany(t => t.HomeMatches)
                    .WithOne(m => m.HomeTeam)
                    .HasForeignKey(m => m.HomeTeamId)
